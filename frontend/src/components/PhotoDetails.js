@@ -92,6 +92,8 @@ function PhotoDetails() {
     }
 
     const score = (photo.likes || 0) - (photo.dislikes || 0);
+    const isOwner = userContext.user && photo.postedBy?._id === userContext.user._id;
+    const actionsDisabled = !userContext.user || isOwner;
 
     return (
         <main className="page detail-page">
@@ -109,11 +111,12 @@ function PhotoDetails() {
                         <span>{score} glasov</span>
                     </div>
                     <div className="action-row">
-                        <button disabled={!userContext.user} onClick={() => vote("like")}>Like ({photo.likes || 0})</button>
-                        <button disabled={!userContext.user} onClick={() => vote("dislike")}>Dislike ({photo.dislikes || 0})</button>
-                        <button disabled={!userContext.user} className="danger" onClick={reportPhoto}>Prijavi</button>
+                        <button disabled={actionsDisabled} onClick={() => vote("like")}>Like ({photo.likes || 0})</button>
+                        <button disabled={actionsDisabled} onClick={() => vote("dislike")}>Dislike ({photo.dislikes || 0})</button>
+                        <button disabled={actionsDisabled} className="danger" onClick={reportPhoto}>Prijavi</button>
                     </div>
                     {!userContext.user ? <p className="helper-text">Za glasovanje, komentar ali prijavo se morate prijaviti.</p> : ""}
+                    {isOwner ? <p className="helper-text">Lastne slike ne morete oceniti ali prijaviti.</p> : ""}
                 </div>
             </article>
 

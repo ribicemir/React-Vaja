@@ -147,6 +147,12 @@ module.exports = {
                 });
             }
 
+            if (userIdMatches(photo.postedBy, req.session.userId)) {
+                return res.status(403).json({
+                    message: 'You cannot vote on your own photo.'
+                });
+            }
+
             var existingVote = photo.votes.find(function(vote) {
                 return userIdMatches(vote.user, req.session.userId);
             });
@@ -259,6 +265,12 @@ module.exports = {
             if (!photo) {
                 return res.status(404).json({
                     message: 'No such photo'
+                });
+            }
+
+            if (userIdMatches(photo.postedBy, req.session.userId)) {
+                return res.status(403).json({
+                    message: 'You cannot report your own photo.'
                 });
             }
 
