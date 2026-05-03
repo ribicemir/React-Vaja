@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../userContext';
 import { Navigate } from 'react-router-dom';
+import { apiFetch } from '../api';
 
 function Profile(){
     const userContext = useContext(UserContext); 
@@ -8,20 +9,25 @@ function Profile(){
 
     useEffect(function(){
         const getProfile = async function(){
-            const res = await fetch("http://localhost:3001/users/profile", {credentials: "include"});
-            const data = await res.json();
-            setProfile(data);
+            try {
+                const data = await apiFetch("/users/profile");
+                setProfile(data);
+            } catch (err) {
+                setProfile({});
+            }
         }
         getProfile();
     }, []);
 
     return (
-        <>
+        <main className="page narrow-page">
             {!userContext.user ? <Navigate replace to="/login" /> : ""}
-            <h1>User profile</h1>
-            <p>Username: {profile.username}</p>
-            <p>Email: {profile.email}</p>
-        </>
+            <section className="profile-panel">
+                <h2>Profil</h2>
+                <p><strong>Uporabnisko ime:</strong> {profile.username}</p>
+                <p><strong>Email:</strong> {profile.email}</p>
+            </section>
+        </main>
     );
 }
 

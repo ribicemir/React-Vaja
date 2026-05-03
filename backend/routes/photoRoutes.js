@@ -17,10 +17,14 @@ function requiresLogin(req, res, next){
 }
 
 router.get('/', photoController.list);
+router.get('/ranked', photoController.ranked);
 //router.get('/publish', requiresLogin, photoController.publish);
 router.get('/:id', photoController.show);
 
 router.post('/', requiresLogin, upload.single('image'), photoController.create);
+router.post('/:id/vote', requiresLogin, photoController.vote);
+router.post('/:id/comments', requiresLogin, photoController.comment);
+router.post('/:id/report', requiresLogin, photoController.report);
 
 router.put('/:id', photoController.update);
 
