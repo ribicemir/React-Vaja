@@ -5,9 +5,306 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #f4f7fb;
+  color: #162033;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+header {
+  align-items: center;
+  background: #ffffff;
+  border-bottom: 1px solid #dbe3ef;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  padding: 18px clamp(16px, 4vw, 48px);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+header h1 {
+  font-size: 1.35rem;
+  margin: 0;
+}
+
+nav ul {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav a,
+.back-link {
+  border-radius: 6px;
+  color: #2454a6;
+  display: inline-flex;
+  font-weight: 700;
+  padding: 8px 10px;
+}
+
+nav a:hover,
+.back-link:hover {
+  background: #eef4ff;
+}
+
+.page {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 32px clamp(16px, 4vw, 48px);
+}
+
+.narrow-page {
+  max-width: 620px;
+}
+
+.page-heading {
+  margin-bottom: 24px;
+}
+
+.page-heading h2,
+.form-panel h2,
+.profile-panel h2 {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  margin: 0 0 8px;
+}
+
+.page-heading p,
+.photo-card p,
+.photo-detail-body p,
+.helper-text,
+.empty-state {
+  color: #5d6b82;
+}
+
+.photo-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.photo-card,
+.form-panel,
+.profile-panel,
+.comments-panel {
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(31, 44, 71, 0.06);
+}
+
+.photo-card {
+  overflow: hidden;
+}
+
+.photo-card-image {
+  aspect-ratio: 4 / 3;
+  background: #dbe3ef;
+  display: block;
+  overflow: hidden;
+}
+
+.photo-card img,
+.photo-detail img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.photo-card-body {
+  padding: 18px;
+}
+
+.photo-card h2 {
+  font-size: 1.2rem;
+  margin: 0 0 8px;
+}
+
+.photo-card h2 a:hover {
+  color: #2454a6;
+}
+
+.photo-meta {
+  color: #64748b;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.92rem;
+  gap: 8px 14px;
+  margin-top: 14px;
+}
+
+.photo-detail {
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  border-radius: 8px;
+  display: grid;
+  gap: 0;
+  grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
+  overflow: hidden;
+}
+
+.photo-detail > img {
+  background: #dbe3ef;
+  min-height: 360px;
+}
+
+.photo-detail-body {
+  padding: 28px;
+}
+
+.photo-detail-body h2 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin: 16px 0 12px;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+button {
+  background: #2454a6;
+  border: 0;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 700;
+  min-height: 42px;
+  padding: 10px 14px;
+}
+
+button:hover {
+  background: #1d4385;
+}
+
+button:disabled {
+  background: #9aa8bb;
+  cursor: not-allowed;
+}
+
+button.danger {
+  background: #b42318;
+}
+
+button.danger:hover {
+  background: #8f1d14;
+}
+
+.form-panel {
+  display: grid;
+  gap: 12px;
+  padding: 24px;
+}
+
+label {
+  color: #334155;
+  font-weight: 700;
+}
+
+input,
+textarea {
+  border: 1px solid #c8d2df;
+  border-radius: 6px;
+  min-height: 42px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.alert,
+.notice {
+  border-radius: 6px;
+  font-weight: 700;
+  margin: 0 0 14px;
+  padding: 12px 14px;
+}
+
+.alert {
+  background: #fff1f0;
+  color: #9f1c12;
+}
+
+.notice {
+  background: #eaf8ef;
+  color: #146c2e;
+}
+
+.comments-panel {
+  margin-top: 24px;
+  padding: 24px;
+}
+
+.comments-panel h3 {
+  margin: 0 0 16px;
+}
+
+.comment-form {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.comments-list {
+  display: grid;
+  gap: 12px;
+}
+
+.comment {
+  border-top: 1px solid #dbe3ef;
+  padding-top: 12px;
+}
+
+.comment span {
+  color: #64748b;
+  display: block;
+  font-size: 0.9rem;
+  margin-top: 2px;
+}
+
+.profile-panel {
+  padding: 24px;
+}
+
+@media (max-width: 760px) {
+  header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .photo-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .photo-detail > img {
+    min-height: 260px;
+  }
 }

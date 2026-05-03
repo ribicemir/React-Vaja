@@ -51,6 +51,12 @@ module.exports = {
      * userController.create()
      */
     create: function (req, res) {
+        if (!req.body.username || !req.body.password || !req.body.email) {
+            return res.status(400).json({
+                message: 'Username, email and password are required.'
+            });
+        }
+
         var user = new UserModel({
 			username : req.body.username,
 			password : req.body.password,
@@ -59,13 +65,18 @@ module.exports = {
 
         user.save(function (err, user) {
             if (err) {
+                if (err.code === 11000) {
+                    return res.status(409).json({
+                        message: 'Username or email already exists.'
+                    });
+                }
                 return res.status(500).json({
                     message: 'Error when creating user',
                     error: err
                 });
             }
 
-            return res.status(201).json(user);
+            return res.status(201).json(user.toJSON());
             //return res.redirect('/users/login');
         });
     },
@@ -158,7 +169,7 @@ module.exports = {
                     return next(err);
                 } else{
                     //return res.render('user/profile', user);
-                    return res.json(user);
+                    return res.json(user.toJSON());
                 }
             }
         });  

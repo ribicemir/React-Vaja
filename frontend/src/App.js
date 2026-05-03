@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { UserContext } from "./userContext";
 import Header from "./components/Header";
@@ -8,6 +8,7 @@ import Register from "./components/Register";
 import Profile from "./components/Profile";
 import Logout from "./components/Logout";
 import AddPhoto from "./components/AddPhoto";
+import PhotoDetails from "./components/PhotoDetails";
 
 function App() {
   /**
@@ -26,7 +27,11 @@ function App() {
    */
   const [user, setUser] = useState(localStorage.user ? JSON.parse(localStorage.user) : null);
   const updateUserData = (userInfo) => {
-    localStorage.setItem("user", JSON.stringify(userInfo));
+    if (userInfo) {
+      localStorage.setItem("user", JSON.stringify(userInfo));
+    } else {
+      localStorage.removeItem("user");
+    }
     setUser(userInfo);
   }
 
@@ -45,9 +50,11 @@ function App() {
         setUserContext: updateUserData
       }}>
         <div className="App">
-          <Header title="My application"></Header>
+          <Header title="FotoShare"></Header>
           <Routes>
             <Route path="/" exact element={<Photos />}></Route>
+            <Route path="/ranked" exact element={<Photos ranked />}></Route>
+            <Route path="/photos/:id" element={<PhotoDetails />}></Route>
             <Route path="/login" exact element={<Login />}></Route>
             <Route path="/register" element={<Register />}></Route>
             <Route path="/publish" element={<AddPhoto />}></Route>
