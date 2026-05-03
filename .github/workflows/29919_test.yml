@@ -1,0 +1,103 @@
+name: 29919_test
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  preveri-testne-skripte:
+    name: Preveri obstoj testnih skript
+    runs-on: self-hosted
+
+    steps:
+      - name: Prenesi kodo
+        uses: actions/checkout@v4
+
+      - name: Preveri testne skripte
+        shell: bash
+        run: |
+          : > napaka.txt
+
+          {
+            echo "Preverjam, ali obstajajo testne skripte..."
+
+            TESTI="$(find frontend backend -type f \( -name '*.test.js' -o -name '*.spec.js' \) 2>/dev/null || true)"
+
+            if [ -z "$TESTI" ]; then
+              echo "Napaka: nisem našel testnih skript (*.test.js ali *.spec.js)." >&2
+            else
+              echo "Najdeni testi:"
+              echo "$TESTI"
+            fi
+          } 2> napaka.txt
+
+          echo "Vsebina napaka.txt:"
+          cat napaka.txt || true
+
+      - name: Shrani napaka.txt kot artefakt
+        uses: actions/upload-artifact@v4
+        with:
+          name: napaka
+          path: napaka.txt
+          if-no-files-found: error
+
+  izvedi-teste:
+    name: Izvedi teste - Node ${{ matrix.node-version }}
+    needs: preveri-testne-skripte
+    runs-on: self-hosted
+
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        node-version: [18, 20]
+
+    steps:
+      - name: Prenesi kodo
+        uses: actions/checkout@v4
+
+      - name: Prenesi artefakt napaka.txt
+        uses: actions/download-artifact@v4
+        with:
+          name: napaka
+
+      - name: Preveri, ali je napaka.txt prazen
+        shell: bash
+        run: |
+          if [ -s napaka.txt ]; then
+            echo "Prvi job je zaznal napako:"
+            cat napaka.txt
+            exit 1
+          fi
+
+          echo "napaka.txt je prazen, nadaljujem."
+
+      - name: Nastavi Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Namesti frontend odvisnosti
+        shell: bash
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Zaženi frontend teste
+        shell: bash
+        run: |
+          cd frontend
+          CI=true npm test -- --watchAll=false
+
+      - name: Preveri frontend build
+        shell: bash
+        run: |
+          cd frontend
+          npm run build
+
+      - name: Namesti backend odvisnosti
+        shell: bash
+        run: |
+          cd backend
+          npm ci
